@@ -2,7 +2,7 @@
 
 Uses multiprocessing in python and differential output checking to automatically grade C programs through gradescope
 
-1. Zip all files (except 'Code' folder) and upload to GradeScope as the auto grader file
+1. Zip all files (inside the 'test_autograder' folder) and upload to GradeScope as the auto grader file
 
 2. Done!
 
