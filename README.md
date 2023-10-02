@@ -4,7 +4,7 @@ Uses multiprocessing in python and differential output checking to automatically
 
 1. Zip all files (except 'Code' folder) and upload to GradeScope as the auto grader file
 
-2. Done! Just submit the c file in the 'Code' folder as an example
+2. Done!
 
 ## Making Custom Tests
 
