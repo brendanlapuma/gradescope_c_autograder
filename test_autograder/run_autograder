@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
 # Find the files to tested ( searches within folders )
-exampleFile=$(find / -xdev -name proj2-1.c)
-exampleFile=$(find / -xdev -name proj2-2.c)
-exampleFile=$(find / -xdev -name proj2-3.c)
+exampleFile=$(find / -xdev -name exercise1.c)
+exampleFile=$(find / -xdev -name exercise2.c)
+exampleFile=$(find / -xdev -name exercise3.c)
 
 # Copies the files into the Autograder's CWD 
-cp $exampleFile /autograder/source/proj2-1.c
-cp $exampleFile /autograder/source/proj2-2.c
-cp $exampleFile /autograder/source/proj2-3.c
+cp $exampleFile /autograder/source/exercise1.c
+cp $exampleFile /autograder/source/exercise2.c
+cp $exampleFile /autograder/source/exercise3.c
 # cp $mFile /autograder/source/makefile
 
 cd /autograder/source
 
 # Runs the student's make file ( if you're not using makefiles then place you compile command here )
-gcc -o p2-1.out proj2-1.c
-gcc -o p2-2.out proj2-2.c
-gcc -o p3-3.out proj2-3.c
+gcc -o p2-1.out exercise1.c
+gcc -o p2-2.out exercise2.c
+gcc -o p3-3.out exercise3.c
 
 python3 run_tests.py > /autograder/results/results.json
