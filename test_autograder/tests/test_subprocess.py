@@ -14,7 +14,7 @@ class TestDiff(unittest.TestCase):
 
         # Testing existence of exercise 1
         try:
-            test = subprocess.Popen(["./p2-1.out"])
+            test = subprocess.Popen(["./exercise1.out"])
             test.kill()
             self.assertTrue(True)
         except:
@@ -22,7 +22,7 @@ class TestDiff(unittest.TestCase):
 
         # Testing existence of exercise 2
         try:
-            test = subprocess.Popen(["./p2-2.out"])
+            test = subprocess.Popen(["./exercise2.out"])
             test.kill()
             self.assertTrue(True)
         except:
@@ -31,7 +31,7 @@ class TestDiff(unittest.TestCase):
 
         # Testing existence of exercise 3
         try:
-            test = subprocess.Popen(["./p2-3.out"])
+            test = subprocess.Popen(["./exercise3.out"])
             test.kill()
             self.assertTrue(True)
         except:
@@ -51,7 +51,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public00.in', 'r')
         output = open('./myPublic00.output','w')
 
-        test = subprocess.Popen(["./p2-1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -82,7 +82,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public01.in', 'r')
         output = open('./myPublic01.output','w')
 
-        test = subprocess.Popen(["./p2-1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -113,7 +113,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public02.in', 'r')
         output = open('./myPublic02.output','w')
 
-        test = subprocess.Popen(["./p2-1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -161,7 +161,7 @@ class TestDiff(unittest.TestCase):
             # opening i/o for student's results
             input = open('./public03.in','r')
             myOutput = open('./myPublic03.output','w')
-            test = subprocess.Popen(["./p2-1.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
+            test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()
@@ -192,7 +192,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public20.in', 'r')
         output = open('./myPublic20.output','w')
 
-        test = subprocess.Popen(["./p2-2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -223,7 +223,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public21.in', 'r')
         output = open('./myPublic21.output','w')
 
-        test = subprocess.Popen(["./p2-2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -255,7 +255,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public22.in', 'r')
         output = open('./myPublic22.output','w')
 
-        test = subprocess.Popen(["./p2-2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -314,7 +314,7 @@ class TestDiff(unittest.TestCase):
             # opening i/o for student's results
             input = open('./public23.in','r')
             myOutput = open('./myPublic23.output','w')
-            test = subprocess.Popen(["./p2-2.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
+            test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()
@@ -345,7 +345,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public30.in', 'r')
         output = open('./myPublic30.output','w')
 
-        test = subprocess.Popen(["./p2-3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -377,7 +377,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public31.in', 'r')
         output = open('./myPublic31.output','w')
 
-        test = subprocess.Popen(["./p2-3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -409,7 +409,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public32.in', 'r')
         output = open('./myPublic32.output','w')
 
-        test = subprocess.Popen(["./p2-3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -441,7 +441,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public33.in', 'r')
         output = open('./myPublic33.output','w')
 
-        test = subprocess.Popen(["./p2-3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -473,7 +473,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public34.in', 'r')
         output = open('./myPublic34.output','w')
 
-        test = subprocess.Popen(["./p2-3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
 
         output.close()
@@ -530,7 +530,7 @@ class TestDiff(unittest.TestCase):
             # opening i/o for student's results
             input = open('./public35.in','r')
             myOutput = open('./myPublic35.output','w')
-            test = subprocess.Popen(["./p2-3.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
+            test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()
