@@ -514,6 +514,8 @@ class TestDiff(unittest.TestCase):
 
             if n < 1:
                 output.write('Invalid entry.')
+            elif n == 1:
+                output.write('This number is not prime.')
             else:
                 flag = False
                 for i in range(2,(n // 2) + 1):
