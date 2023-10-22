@@ -3,6 +3,7 @@ import unittest
 import subprocess
 import itertools
 import random
+import pickle
 
 class TestDiff(unittest.TestCase):
     def setUp(self):
@@ -27,7 +28,6 @@ class TestDiff(unittest.TestCase):
             self.assertTrue(True)
         except:
             self.fail(msg = 'file exercise2.c either doesn\'t exist, or doesn\'t compile\n\nCheck your submitted file\'s name, and make sure the code compiles on grace.')
-        test.terminate()
 
         # Testing existence of exercise 3
         try:
@@ -37,156 +37,113 @@ class TestDiff(unittest.TestCase):
         except:
             self.fail(msg = 'file exercise3.c either doesn\'t exist, or doesn\'t compile\n\nCheck your submitted file\'s name, and make sure the code compiles on grace.')
 
+        # Testing existence of exercise 4
+        try:
+            test = subprocess.Popen(["./exercise4.out"])
+            test.kill()
+            self.assertTrue(True)
+        except:
+            self.fail(msg = 'file exercise4.c either doesn\'t exist, or doesn\'t compile\n\nCheck your submitted file\'s name, and make sure the code compiles on grace.')
+
         test.terminate()
 
-    @weight(5)
+    @weight(7)
     def test_Public_1(self):
         """Exercise One - Public 1"""
 
         # Create a subprocess to run the students code to obtain an output 
-        input = open('./public00.in', 'r')
-        num = input.readline()
+        input = open('./public10.in', 'r')
+        nums = input.readlines()
+        sol = ''
+        for num in nums:
+            sol += num
         input.close()
 
-        input = open('./public00.in', 'r')
-        output = open('./myPublic00.output','w')
+        input = open('./public10.in', 'r')
+        output = open('./myPublic10.output','w')
 
         test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
-
         output.close()
         input.close()
 
+        correctOutput = open('./public10.output','w')
+        input = open('./public10.in', 'r')
+        test2 = subprocess.Popen(['./sol3-1.out'], stdin = input, stdout = correctOutput, stderr = subprocess.PIPE)
+        test2.wait()
+        correctOutput.close()
+        input.close()
+
         # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic00.output', 'r') as myOutput, open('./public00.output', 'r') as correctOutput:
+        with open('./myPublic10.output', 'r') as myOutput, open('./public10.output', 'r') as correctOutput:
             mine = ''
             correct = ''
             for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
                 mine += myLine
                 correct += correctLine
             
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
+            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
         myOutput.close()
         correctOutput.close()
         test.terminate()
 
-    @weight(5)
+    @weight(15)
     def test_Public_2(self):
-        """Exercise One - Public 2"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public01.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public01.in', 'r')
-        output = open('./myPublic01.output','w')
-
-        test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic01.output', 'r') as myOutput, open('./public01.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(5)
-    def test_Public_3(self):
-        """Exercise One - Public 3"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public02.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public02.in', 'r')
-        output = open('./myPublic02.output','w')
-
-        test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic02.output', 'r') as myOutput, open('./public02.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(13)
-    def test_Public_4(self):
-        """Exercise One - Public 4 (randomized inputs)"""
-        inputs = [random.randint(1,100) for i in range(0,50)]
+        """Exercise One - Public 2 (randomized inputs)"""
+        inputs = [[random.randint(0,100000) for i in range(0,10)] for j in range(0,50)]
 
         # counter for tests
         x = 1
         for n in inputs:
-            num = str(n)
-            input = open('./public03.in','w')
-            input.write(f'{num}\n')
+            input = open('./public11.in','w')
+            sol = ''
+            for num in n: 
+                input.write(f'{str(num)}\n')
+                sol += str(num) + '\n'
             input.close()
 
-            output = open('./public03.output','w')
-
-            output.write('Please enter an integer: ')
-
-            # writing correct output to file
-            for i in range(0,n + 1):
-                for j in range(0,i):
-                    output.write('*')
-                output.write('\n')
-
+            # opening i/o for solution
+            input = open('./public11.in','r')
+            output = open('./public11.output','w')
+            test = subprocess.Popen(["./sol3-1.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+            test.wait()
+            input.close()
             output.close()
-
-
+            
             # opening i/o for student's results
-            input = open('./public03.in','r')
-            myOutput = open('./myPublic03.output','w')
+            input = open('./public11.in','r')
+            myOutput = open('./myPublic11.output','w')
             test = subprocess.Popen(["./exercise1.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()
 
             # tests output line-by-line, tells student exactly what the difference is on that line
-            with open('./myPublic03.output', 'r') as myOutput, open('./public03.output', 'r') as correctOutput:
+            with open('./myPublic11.output', 'r') as myOutput, open('./public11.output', 'r') as correctOutput:
                 mine = ''
                 correct = ''
                 for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
                     mine += myLine
                     correct += correctLine
             
-                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of " + str(len(inputs)) + " random inputs\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
+                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of " + str(len(inputs)) + " random inputs\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
             x += 1
         myOutput.close()
         correctOutput.close()
         test.terminate()
 
-    @weight(5)
-    def test_Public_5(self):
+    @weight(7)
+    def test_Public_3(self):
         """Exercise Two - Public 1"""
 
+        n = ['X','O','O','X','X','X','O','O','X']
+
         # Create a subprocess to run the students code to obtain an output 
-        input = open('./public20.in', 'r')
-        num = input.readline()
+        input = open('./public20.in', 'w')
+        sol = ''
+        for num in n: 
+            input.write(f'{str(num)}\n')
+            sol += num + '\n'
         input.close()
 
         input = open('./public20.in', 'r')
@@ -194,8 +151,14 @@ class TestDiff(unittest.TestCase):
 
         test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
-
         output.close()
+        input.close()
+
+        correctOutput = open('./public20.output','w')
+        input = open('./public20.in', 'r')
+        test2 = subprocess.Popen(['./sol3-2.out'], stdin = input, stdout = correctOutput, stderr = subprocess.PIPE)
+        test2.wait()
+        correctOutput.close()
         input.close()
 
         # tests output line-by-line, tells student exactly what the difference is on that line
@@ -206,140 +169,71 @@ class TestDiff(unittest.TestCase):
                 mine += myLine
                 correct += correctLine
             
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
+            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
         myOutput.close()
         correctOutput.close()
         test.terminate()
 
-    @weight(5)
-    def test_Public_6(self):
-        """Exercise Two - Public 2"""
+    @weight(15)
+    def test_Public_4(self):
+        """Exercise Two - Public 2 (randomized inputs)"""
+        d = {
+            0:'X',
+            1:'O'
+        }
 
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public21.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public21.in', 'r')
-        output = open('./myPublic21.output','w')
-
-        test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic21.output', 'r') as myOutput, open('./public21.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(5)
-    def test_Public_7(self):
-        """Exercise Two - Public 3"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public22.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public22.in', 'r')
-        output = open('./myPublic22.output','w')
-
-        test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic22.output', 'r') as myOutput, open('./public22.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(13)
-    def test_Public_8(self):
-        """Exercise Two - Public 4 (randomized inputs)"""
-        inputs = [random.randint(1,100) for i in range(0,50)]
+        inputs = [[d[random.randint(0,1)] for i in range(0,9)] for j in range(0,50)]
 
         # counter for tests
         x = 1
         for n in inputs:
-            num = str(n)
-            input = open('./public23.in','w')
-            input.write(f'{num}\n')
+            input = open('./public21.in','w')
+            sol = ''
+            for num in n: 
+                input.write(f'{str(num)}\n')
+                sol += num + '\n'
             input.close()
 
-            # writing correct output to file
-            output = open('./public23.output','w')
-
-            output.write('Please enter an integer: ')
-            output.write('\n')
-
-            for i in range(0,n):
-                output.write('*')
-
-            output.write('\n')
-
-            for i in range(1,n - 1):
-                output.write('*')
-                for j in range(1,n - 1):
-                    output.write(' ')
-                output.write('*\n')
-
-            if n != 1:
-                for i in range(0,n):
-                    output.write('*')
-
+            # opening i/o for solution
+            input = open('./public21.in','r')
+            output = open('./public21.output','w')
+            test = subprocess.Popen(["./sol3-2.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+            test.wait()
+            input.close()
             output.close()
-
+            
             # opening i/o for student's results
-            input = open('./public23.in','r')
-            myOutput = open('./myPublic23.output','w')
+            input = open('./public21.in','r')
+            myOutput = open('./myPublic21.output','w')
             test = subprocess.Popen(["./exercise2.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()
 
             # tests output line-by-line, tells student exactly what the difference is on that line
-            with open('./myPublic23.output', 'r') as myOutput, open('./public23.output', 'r') as correctOutput:
+            with open('./myPublic21.output', 'r') as myOutput, open('./public21.output', 'r') as correctOutput:
                 mine = ''
                 correct = ''
                 for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
                     mine += myLine
                     correct += correctLine
             
-                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of " + str(len(inputs)) + " random inputs\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
+                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of " + str(len(inputs)) + " random inputs\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
             x += 1
         myOutput.close()
         correctOutput.close()
         test.terminate()
 
-    @weight(5)
-    def test_Public_9(self):
+    @weight(7)
+    def test_Public_5(self):
         """Exercise Three - Public 1"""
 
         # Create a subprocess to run the students code to obtain an output 
         input = open('./public30.in', 'r')
-        num = input.readline()
+        nums = input.readlines()
+        sol = ''
+        for num in nums:
+            sol += num
         input.close()
 
         input = open('./public30.in', 'r')
@@ -347,8 +241,14 @@ class TestDiff(unittest.TestCase):
 
         test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
-
         output.close()
+        input.close()
+
+        correctOutput = open('./public30.output','w')
+        input = open('./public30.in', 'r')
+        test2 = subprocess.Popen(['./sol3-3.out'], stdin = input, stdout = correctOutput, stderr = subprocess.PIPE)
+        test2.wait()
+        correctOutput.close()
         input.close()
 
         # tests output line-by-line, tells student exactly what the difference is on that line
@@ -359,193 +259,181 @@ class TestDiff(unittest.TestCase):
                 mine += myLine
                 correct += correctLine
             
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
+            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
         myOutput.close()
         correctOutput.close()
         test.terminate()
 
-    @weight(5)
-    def test_Public_10(self):
-        """Exercise Three - Public 2"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public31.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public31.in', 'r')
-        output = open('./myPublic31.output','w')
-
-        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic31.output', 'r') as myOutput, open('./public31.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(5)
-    def test_Public_11(self):
-        """Exercise Three - Public 3"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public32.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public32.in', 'r')
-        output = open('./myPublic32.output','w')
-
-        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic32.output', 'r') as myOutput, open('./public32.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(5)
-    def test_Public_12(self):
-        """Exercise Three - Public 4"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public33.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public33.in', 'r')
-        output = open('./myPublic33.output','w')
-
-        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic33.output', 'r') as myOutput, open('./public33.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(5)
-    def test_Public_13(self):
-        """Exercise Three - Public 5"""
-
-        # Create a subprocess to run the students code to obtain an output 
-        input = open('./public34.in', 'r')
-        num = input.readline()
-        input.close()
-
-        input = open('./public34.in', 'r')
-        output = open('./myPublic34.output','w')
-
-        test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
-        test.wait()
-
-        output.close()
-        input.close()
-
-        # tests output line-by-line, tells student exactly what the difference is on that line
-        with open('./myPublic34.output', 'r') as myOutput, open('./public34.output', 'r') as correctOutput:
-            mine = ''
-            correct = ''
-            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
-                mine += myLine
-                correct += correctLine
-            
-            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
-
-        myOutput.close()
-        correctOutput.close()
-        test.terminate()
-
-    @weight(14)
-    def test_Public_14(self):
-        """Exercise Three - Public 6 (randomized inputs)"""
-        inputs = [random.randint(-5,100) for i in range(0,50)]
+    @weight(15)
+    def test_Public_6(self):
+        """Exercise Three - Public 2 (randomized inputs)"""
+        inputs = [[random.randint(0,1000) for i in range(0,10)] for j in range(0,10)]
 
         # counter for tests
         x = 1
         for n in inputs:
-            num = str(n)
-            input = open('./public35.in','w')
-            input.write(f'{num}\n')
+            input = open('./public31.in','w')
+            sol = ''
+            for num in n: 
+                input.write(f'{str(num)}\n')
+                sol += str(num) + '\n'
             input.close()
 
-            # writing correct output to file
-            output = open('./public35.output','w')
-
-            output.write('Please enter an integer: ')
-            output.write('\n')
-
-            if n < 1:
-                output.write('Invalid entry.')
-            elif n == 1:
-                output.write('This number is not prime.')
-            else:
-                flag = False
-                for i in range(2,(n // 2) + 1):
-                    if n % i == 0:
-                        flag = True
-                        break
-                if not flag:
-                    output.write('This is prime.')
-                else:
-                    output.write('This number is not prime.')
-
+            # opening i/o for solution
+            input = open('./public31.in','r')
+            output = open('./public31.output','w')
+            test = subprocess.Popen(["./sol3-3.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+            test.wait()
+            input.close()
             output.close()
-
+            
             # opening i/o for student's results
-            input = open('./public35.in','r')
-            myOutput = open('./myPublic35.output','w')
+            input = open('./public31.in','r')
+            myOutput = open('./myPublic31.output','w')
             test = subprocess.Popen(["./exercise3.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()
 
             # tests output line-by-line, tells student exactly what the difference is on that line
-            with open('./myPublic35.output', 'r') as myOutput, open('./public35.output', 'r') as correctOutput:
+            with open('./myPublic31.output', 'r') as myOutput, open('./public31.output', 'r') as correctOutput:
                 mine = ''
                 correct = ''
                 for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
                     mine += myLine
                     correct += correctLine
             
-                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of " + str(len(inputs)) + " random inputs\nInput: " + num + "\n\nExpected: \n" + correct.strip() + "\nFound: \n" + mine.strip()))
+                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of " + str(len(inputs)) + " random inputs\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
+            x += 1
+        myOutput.close()
+        correctOutput.close()
+        test.terminate()
+
+    @weight(7)
+    def test_Public_7(self):
+        """Exercise Four - Public 1"""
+        n = ['X','O','O','X','X','X','O','O','X']
+
+        # Create a subprocess to run the students code to obtain an output 
+        input = open('./public40.in', 'w')
+        sol = ''
+        for num in n: 
+            input.write(f'{str(num)}\n')
+            sol += num + '\n'
+        input.close()
+
+        input = open('./public40.in', 'r')
+        output = open('./myPublic40.output','w')
+
+        test = subprocess.Popen(["./exercise4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test.wait()
+        output.close()
+        input.close()
+
+        correctOutput = open('./public40.output','w')
+        input = open('./public40.in', 'r')
+        test2 = subprocess.Popen(['./sol3-4.out'], stdin = input, stdout = correctOutput, stderr = subprocess.PIPE)
+        test2.wait()
+        correctOutput.close()
+        input.close()
+
+        # tests output line-by-line, tells student exactly what the difference is on that line
+        with open('./myPublic40.output', 'r') as myOutput, open('./public40.output', 'r') as correctOutput:
+            mine = ''
+            correct = ''
+            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
+                mine += myLine
+                correct += correctLine
+            
+            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
+        myOutput.close()
+        correctOutput.close()
+        test.terminate()
+
+    @weight(7)
+    def test_Public_8(self):
+        """Exercise Four - Public 2"""
+
+        n = ['X','O','X','X','O','X','O','X','O']
+
+        # Create a subprocess to run the students code to obtain an output 
+        input = open('./public41.in', 'w')
+        sol = ''
+        for num in n: 
+            input.write(f'{str(num)}\n')
+            sol += num + '\n'
+        input.close()
+
+        input = open('./public41.in', 'r')
+        output = open('./myPublic41.output','w')
+
+        test = subprocess.Popen(["./exercise4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test.wait()
+        output.close()
+        input.close()
+
+        correctOutput = open('./public41.output','w')
+        input = open('./public41.in', 'r')
+        test2 = subprocess.Popen(['./sol3-4.out'], stdin = input, stdout = correctOutput, stderr = subprocess.PIPE)
+        test2.wait()
+        correctOutput.close()
+        input.close()
+
+        # tests output line-by-line, tells student exactly what the difference is on that line
+        with open('./myPublic41.output', 'r') as myOutput, open('./public41.output', 'r') as correctOutput:
+            mine = ''
+            correct = ''
+            for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
+                mine += myLine
+                correct += correctLine
+            
+            self.assertTrue(mine.strip() == correct.strip(), msg=("\nInput:\n" + sol + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
+        myOutput.close()
+        correctOutput.close()
+        test.terminate()
+
+    @weight(15)
+    def test_Public_9(self):
+        """Exercise Four - Public 3 (randomized inputs)"""
+
+        vb = open('validboards','rb')
+        vboards = pickle.load(vb)
+        vb.close()
+
+        # counter for tests
+        x = 1
+        for i in range(0,50):
+            input = open('./public42.in','w')
+            board = vboards[random.randint(0, len(vboards) - 1)]
+
+            input.write(board)
+            input.close()
+
+            # opening i/o for solution
+            input = open('./public42.in','r')
+            output = open('./public42.output','w')
+            test = subprocess.Popen(["./sol3-4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+            test.wait()
+            input.close()
+            output.close()
+            
+            # opening i/o for student's results
+            input = open('./public42.in','r')
+            myOutput = open('./myPublic42.output','w')
+            test = subprocess.Popen(["./exercise4.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
+            test.wait()
+            input.close()
+            myOutput.close()
+
+            # tests output line-by-line, tells student exactly what the difference is on that line
+            with open('./myPublic42.output', 'r') as myOutput, open('./public42.output', 'r') as correctOutput:
+                mine = ''
+                correct = ''
+                for myLine, correctLine in itertools.zip_longest(myOutput, correctOutput, fillvalue=' '):
+                    mine += myLine
+                    correct += correctLine
+            
+                self.assertTrue(mine.strip() == correct.strip(), msg=("\n\nFailed on test " + str(x) + " of 50 random inputs\nInput:\n" + board + "\n\nExpected: \n" + correct.strip() + "\n\nFound: \n" + mine.strip()))
             x += 1
         myOutput.close()
         correctOutput.close()
