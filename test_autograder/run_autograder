@@ -1,26 +1,14 @@
 #!/usr/bin/env bash
 
 # Find the files to tested ( searches within folders )
-exampleFile=$(find / -xdev -name exercise1.c)
-exampleFile2=$(find / -xdev -name exercise2.c)
-exampleFile3=$(find / -xdev -name exercise3.c)
-exampleFile4=$(find / -xdev -name exercise4.c)
+exampleFile=$(find / -xdev -name hw4.c)
 
 # Find the solution files ( searches within folders )
-solFile=$(find / -xdev -name sol3-1.c)
-solFile2=$(find / -xdev -name sol3-2.c)
-solFile3=$(find / -xdev -name sol3-3.c)
-solFile4=$(find / -xdev -name sol3-4.c)
+solFile=$(find / -xdev -name sol.c)
 
 # Copies the files into the Autograder's CWD 
-cp $exampleFile /autograder/source/exercise1.c
-cp $exampleFile2 /autograder/source/exercise2.c
-cp $exampleFile3 /autograder/source/exercise3.c
-cp $exampleFile4 /autograder/source/exercise4.c
-cp $solFile /autograder/source/sol3-1.c
-cp $solFile2 /autograder/source/sol3-2.c
-cp $solFile3 /autograder/source/sol3-3.c
-cp $solFile4 /autograder/source/sol3-4.c
+cp $exampleFile /autograder/source/hw4.c
+cp $solFile /autograder/source/sol.c
 
 
 # cp $mFile /autograder/source/makefile
@@ -28,14 +16,8 @@ cp $solFile4 /autograder/source/sol3-4.c
 cd /autograder/source
 
 # Compiling student and solution code
-gcc -o exercise1.out exercise1.c
-gcc -o exercise2.out exercise2.c
-gcc -o exercise3.out exercise3.c
-gcc -o exercise4.out exercise4.c
-gcc -o sol3-1.out sol3-1.c
-gcc -o sol3-2.out sol3-2.c
-gcc -o sol3-3.out sol3-3.c
-gcc -o sol3-4.out sol3-4.c
+gcc -o hw4.out hw4.c
+gcc -o sol.out sol.c
 
 # Running tests
 python3 run_tests.py > /autograder/results/results.json
