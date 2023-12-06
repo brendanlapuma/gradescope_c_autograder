@@ -7,7 +7,7 @@ import pickle
 
 class TestDiff(unittest.TestCase):
     def setUp(self):
-        self.coords = [[i,j] for i in range(1,4) for j in range(1,4)] 
+        self.coords = [i for i in range(1,8)] * 6
 
     @weight(5)
     def test_sanity(self):
@@ -15,15 +15,15 @@ class TestDiff(unittest.TestCase):
 
         # Testing existence of exercise 1
         try:
-            test = subprocess.Popen(["./hw4.out"])
+            test = subprocess.Popen(["./hw5.out"])
             test.kill()
             self.assertTrue(True)
         except:
-            self.fail(msg = 'file hw4.c either doesn\'t exist, or doesn\'t compile\n\nCheck your submitted file\'s name, and make sure the code compiles on grace.')
+            self.fail(msg = 'file hw5.c either doesn\'t exist, or doesn\'t compile\n\nCheck your submitted file\'s name, and make sure the code compiles on grace.')
 
         test.terminate()
     
-    # X col win
+    # player 1 vert win, stop
     @weight(5)
     def test_Public_1(self):
         """Public 1"""
@@ -39,7 +39,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public1.in', 'r')
         output = open('./myPublic1.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -64,8 +64,8 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # O col win
-    @weight(5)
+    # player 2 vert win, player 1 hor win, stop
+    @weight(10)
     def test_Public_2(self):
         """Public 2"""
 
@@ -80,7 +80,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public2.in', 'r')
         output = open('./myPublic2.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -105,7 +105,7 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Draw
+    # Draw, stop
     @weight(5)
     def test_Public_3(self):
         """Public 3"""
@@ -121,7 +121,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public3.in', 'r')
         output = open('./myPublic3.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -146,7 +146,7 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Last move X diag win
+    # Player 2 diag win, stop
     @weight(5)
     def test_Public_4(self):
         """Public 4"""
@@ -162,7 +162,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public4.in', 'r')
         output = open('./myPublic4.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -187,7 +187,7 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Immediate quit
+    # 2 games b2b, stop
     @weight(5)
     def test_Public_5(self):
         """Public 5"""
@@ -203,7 +203,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public5.in', 'r')
         output = open('./myPublic5.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -228,8 +228,8 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Moves then quit
-    @weight(10)
+    # top row horiz win, stop
+    @weight(5)
     def test_Public_6(self):
         """Public 6"""
 
@@ -244,7 +244,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public6.in', 'r')
         output = open('./myPublic6.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -269,7 +269,7 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Invalid inputs, some valid moves, then quit
+    # Invalid inputs, win, stop
     @weight(10)
     def test_Public_7(self):
         """Public 7"""
@@ -285,7 +285,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public7.in', 'r')
         output = open('./myPublic7.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -310,7 +310,7 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Invalid inputs, valid moves, diagonal winner
+    # win, invalid inputs, stop
     @weight(10)
     def test_Public_8(self):
         """Public 8"""
@@ -326,7 +326,7 @@ class TestDiff(unittest.TestCase):
         input = open('./public8.in', 'r')
         output = open('./myPublic8.output','w')
 
-        test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
+        test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = output, stderr=subprocess.PIPE)
         test.wait()
         output.close()
         input.close()
@@ -351,7 +351,7 @@ class TestDiff(unittest.TestCase):
         correctOutput.close()
         test.terminate()
 
-    # Bunch of randomized tests
+    # Bunch of randomized one-game tests
     @weight(30)
     def test_Public_9(self):
         """Public 9 (randomized inputs)"""
@@ -359,12 +359,15 @@ class TestDiff(unittest.TestCase):
 
         # counter for tests
         x = 1
-        while x < 200:
+        while x < 100:
             input = open('./public9.in','w')
             sol = ''
             for num in self.coords: 
-                input.write(f'{str(num[0])},{str(num[1])}\n')
-                sol += str(num[0]) + ',' + str(num[1]) + '\n'
+                input.write(f'{str(num)}\n')
+                sol += str(num) + '\n'
+
+            input.write('n\n')
+            sol += 'n\n'
             input.close()
 
             # opening i/o for solution
@@ -378,7 +381,7 @@ class TestDiff(unittest.TestCase):
             # opening i/o for student's results
             input = open('./public9.in','r')
             myOutput = open('./myPublic9.output','w')
-            test = subprocess.Popen(["./hw4.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
+            test = subprocess.Popen(["./hw5.out"], stdin = input, stdout = myOutput, stderr=subprocess.PIPE)
             test.wait()
             input.close()
             myOutput.close()

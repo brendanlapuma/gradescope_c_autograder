@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Find the files to tested ( searches within folders )
-exampleFile=$(find / -xdev -name hw4.c)
+exampleFile=$(find / -xdev -name hw5.c)
 
 # Find the solution files ( searches within folders )
 solFile=$(find / -xdev -name sol.c)
 
 # Copies the files into the Autograder's CWD 
-cp $exampleFile /autograder/source/hw4.c
+cp $exampleFile /autograder/source/hw5.c
 cp $solFile /autograder/source/sol.c
 
 
@@ -16,7 +16,7 @@ cp $solFile /autograder/source/sol.c
 cd /autograder/source
 
 # Compiling student and solution code
-gcc -o hw4.out hw4.c
+gcc -o hw5.out hw5.c
 gcc -o sol.out sol.c
 
 # Running tests
